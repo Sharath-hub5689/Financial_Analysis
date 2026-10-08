@@ -1,0 +1,122 @@
+DAX Measures
+
+Based on my ProjectBI financial-analysis dashboard, Main fields are transaction_id, transaction_date, transaction_status, transaction_type, gender, customer_segment, state, total amount, Total Fees, and Total Tax.     ProjectBI
+Here are the DAX measures can create in Power BI.
+1. Total Amount
+Total Amount =
+SUM('Financial Data'[total amount])
+
+2. Total Transactions
+Total Transactions =
+DISTINCTCOUNT('Financial Data'[transaction_id])
+
+3. Average Transaction
+Average Transaction =
+AVERAGE('Financial Data'[total amount])
+
+4. Total Fees
+Total Fees =
+SUM('Financial Data'[Total Fees])
+
+5. Total Tax
+Total Tax =
+SUM('Financial Data'[Total Tax])
+
+6. Successful Transactions
+Successful Transactions =
+CALCULATE(
+    [Total Transactions],
+    'Financial Data'[transaction_status] = "Success"
+)
+
+7. Failed Transactions
+Failed Transactions =
+CALCULATE(
+    [Total Transactions],
+    'Financial Data'[transaction_status] = "Failed"
+)
+
+8. Success Rate
+Success Rate =
+DIVIDE(
+    [Successful Transactions],
+    [Total Transactions],
+    0
+)
+
+9. Total Amount – Successful
+Successful Amount =
+CALCULATE(
+    [Total Amount],
+    'Financial Data'[transaction_status] = "Success"
+)
+
+10. Total Amount – Failed
+Failed Amount =
+CALCULATE(
+    [Total Amount],
+    'Financial Data'[transaction_status] = "Failed"
+)
+
+11. Previous Year Amount
+For your "vs Previous Year" KPI:
+Previous Year Amount =
+CALCULATE(
+    [Total Amount],
+    SAMEPERIODLASTYEAR('Financial Data'[transaction_date])
+)
+
+12. YoY Amount %
+YoY Amount % =
+DIVIDE(
+    [Total Amount] - [Previous Year Amount],
+    [Previous Year Amount],
+    0
+)
+
+Format as Percentage.
+13. Amount by Transaction Type
+You don't need a special measure for this. Use:
+Total Amount =
+SUM('Financial Data'[total amount])
+
+14. Amount by State
+Again use:
+Total Amount =
+SUM('Financial Data'[total amount])
+
+Put State on the Axis.
+15. Amount by Gender
+Female Amount =
+CALCULATE(
+    [Total Amount],
+    'Financial Data'[gender] = "Female"
+)
+
+Male Amount =
+CALCULATE(
+    [Total Amount],
+    'Financial Data'[gender] = "Male"
+)
+
+16. Female %
+Female % =
+DIVIDE(
+    [Female Amount],
+    [Total Amount],
+    0
+)
+
+17. Male %
+Male % =
+DIVIDE(
+    [Male Amount],
+    [Total Amount],
+    0
+)
+
+18. Monthly Total Amount
+You can simply use:
+Monthly Amount =
+[Total Amount]
+
